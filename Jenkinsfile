@@ -4,20 +4,34 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                checkout scm
                 echo 'Code checked out successfully'
             }
         }
-        stage('Hello') {
+
+        stage('Build') {
             steps {
-                echo "Build triggered by branch: ${env.BRANCH_NAME ?: 'main'}"
-                echo "Build number: ${env.BUILD_NUMBER}"
+                sh 'chmod +x mvnw'
+                sh './mvnw clean package -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh './mvnw test'
             }
         }
     }
 
     post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo '✅ Build and tests passed!'
+        }
+        failure {
+            echo '❌ Build failed — check console output above'
         }
     }
 }
