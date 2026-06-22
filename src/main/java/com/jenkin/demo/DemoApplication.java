@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoApplication {
 
 	static void main(String[] args) {
-		//testing push now
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
