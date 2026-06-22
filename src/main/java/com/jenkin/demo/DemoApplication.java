@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DemoApplication {
-
+//adding commet to test pipline
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
