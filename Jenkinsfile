@@ -11,21 +11,33 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw clean package -DskipTests'
+                script {
+                    if (isUnix()) {
+                        sh 'chmod +x mvnw'
+                        sh './mvnw clean package -DskipTests'
+                    } else {
+                        bat 'mvnw.cmd clean package -DskipTests'
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh './mvnw test'
+                script {
+                    if (isUnix()) {
+                        sh './mvnw test'
+                    } else {
+                        bat 'mvnw.cmd test'
+                    }
+                }
             }
         }
     }
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
         }
         success {
             echo '✅ Build and tests passed!'
